@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Mission Path Planning</title>
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chart.js for dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Canvas for visualization -->
+        <div class="canvas-container">
+            <canvas id="spaceCanvas"></canvas>
+            
+            <!-- Dashboard Overlay (hidden by default) -->
+            <div id="dashboard" class="dashboard hidden">
+                <div class="dashboard-content">
+                    <div class="dashboard-header">
+                        <h2>Mission Analysis Complete</h2>
+                        <button id="closeDashboardBtn" class="btn-secondary">Close</button>
+                    </div>
+                
+                    <div class="charts-container">
+                        <div class="chart-wrapper">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>Algorithm</th>
+                                    <th>Route Cost</th>
+                                    <th>Time (ms)</th>
+                                    <th>Optimal?</th>
+                                    <th>Planets Feasible Up To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Generated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar for Controls -->
+        <aside class="sidebar">
+            <h1 class="glow-text">Mission Control</h1>
+            <p class="subtitle">TSP Algorithm Visualizer</p>
+
+            <div class="control-group">
+                <label for="planetCount">Number of Planets: <span id="planetCountDisplay">8</span></label>
+                <!-- Max 12 recommended for exact methods -->
+                <input type="range" id="planetCount" min="4" max="15" value="8" step="1">
+                <button id="generateBtn" class="btn-primary" style="margin-top: 10px; width: 100%;">Initialize Star System</button>
+            </div>
+
+            <div class="control-group active-algo-info" style="display: none;" id="algoInfoBox">
+                <h3>Current Algorithm:</h3>
+                <h4 id="currentAlgoName">-</h4>
+                <p id="currentAlgoDesc">-</p>
+                <div class="stats">
+                    <p>Current Path Cost: <span id="currentCostDisplay">0.00</span></p>
+                    <p id="extraStatsDisplay"></p> <!-- For nodes pruned, branch bounds etc -->
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="algoSelect">Select Algorithm:</label>
+                <div class="algo-buttons">
+                    <button class="btn-algo" data-algo="nearestneighbor">1. Nearest Neighbor (O(n²))</button>
+                    <button class="btn-algo" data-algo="bruteforce">2. Brute Force (O(n!))</button>
+                    <button class="btn-algo" data-algo="heldkarp">3. Held-Karp DP (O(n²·2ⁿ))</button>
+                    <button class="btn-algo" data-algo="branchandbound">4. Branch & Bound</button>
+                </div>
+            </div>
+
+            <div class="control-group" id="playbackControls">
+                <label for="speedControl">Animation Speed: <span id="speedDisplay">Fast</span></label>
+                <input type="range" id="speedControl" min="1" max="100" value="80">
+                <div class="playback-buttons">
+                    <button id="playPauseBtn" class="btn-action" disabled>▶ Run</button>
+                    <button id="stopBtn" class="btn-action btn-danger" disabled>◼ Stop</button>
+                </div>
+            </div>
+
+            <div class="control-group" style="border-bottom:none">
+                <button id="showDashboardBtn" class="btn-secondary" style="width:100%">Show Dashboard</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/planets.js" defer></script>
+    <script src="js/nearestneighbor.js" defer></script>
+    <script src="js/bruteforce.js" defer></script>
+    <script src="js/heldkarp.js" defer></script>
+    <script src="js/branchandbound.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+    <script src="js/visualizer.js" defer></script>
+</body>
+</html>
